@@ -27,6 +27,8 @@ resource "google_compute_instance" "webapp" {
 
   metadata_startup_script = "sudo apt update && sudo apt -y install apache2"
 
+  
+
   tags = ["http-server", "https-server", "ssh", "http"]
 
   service_account {
