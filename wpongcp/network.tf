@@ -8,9 +8,9 @@ resource "google_compute_network" "vpc" {
 
 
 
-# create public subnet
+# create private subnet
 resource "google_compute_subnetwork" "private_subnet_1" {
-  provider      = "google-beta"
+  provider      = google-beta
   region        = var.gcp_region_1
   purpose       = "PRIVATE"
   name          = "wordpress-private-subnet-1"
