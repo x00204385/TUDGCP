@@ -21,13 +21,13 @@ resource "google_compute_instance" "wordpress" {
     sudo apt install -y apache2 
     sudo apt install -y php libapache2-mod-php php-mysql
     sudo apt install -y mysql-server
-    sudo sed -i "s|bind-address.*|#bind-address|" /etc/mysql/mysql.conf.d/mysqld.cnf
     cd /tmp
     sudo curl -O https://wordpress.org/latest.tar.gz
     sudo tar xf latest.tar.gz
     sudo mv wordpress/ /var/www/html/
     sudo chown -R www-data:www-data /var/www/html/
     sudo chmod -R 755 /var/www/html/
+    sudo touch /tmp/startup_done
   EOF
 
   tags = ["http-server", "https-server", "ssh", "http"]

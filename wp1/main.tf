@@ -25,9 +25,11 @@ resource "google_compute_instance" "webapp" {
     ssh-keys = "${var.username}:${file("~/.ssh/google_compute_engine.pub")}"
   }
 
-  metadata_startup_script = "sudo apt update && sudo apt -y install apache2"
-
-  
+  metadata_startup_script = <<-EOF
+    sudo apt update
+    sudo apt -y install apache2
+    touch /tmp/robwashere
+  EOF
 
   tags = ["http-server", "https-server", "ssh", "http"]
 
