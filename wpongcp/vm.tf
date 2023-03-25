@@ -5,7 +5,7 @@ resource "google_compute_instance" "web_private_1" {
   name         = "webserver-vm1"
   machine_type = "e2-medium"
   zone         = var.gcp_zone_1
-  tags         = ["ssh", "http"]
+  tags         = ["ssh", "http", "icmp"]
 
   boot_disk {
     initialize_params {
@@ -39,7 +39,7 @@ resource "google_compute_instance" "web_private_2" {
   name         = "webserver-vm2"
   machine_type = "e2-medium"
   zone         = var.gcp_zone_1
-  tags         = ["ssh", "http"]
+  tags         = ["ssh", "http", "icmp"]
 
   boot_disk {
     initialize_params {

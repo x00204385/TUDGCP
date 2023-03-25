@@ -60,4 +60,16 @@ resource "google_compute_firewall" "allow-rdp" {
   source_ranges = ["0.0.0.0/0"]
 }
 
+# allow rdp traffic
+resource "google_compute_firewall" "allow-icmp" {
+  name    = "wordpress-fw-allow-icmp"
+  network = google_compute_network.vpc.name
+  allow {
+    protocol = "icmp"
+  }
+  target_tags   = ["icmp"]
+  source_ranges = ["0.0.0.0/0"]
+}
+
+
 

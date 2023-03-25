@@ -30,5 +30,5 @@ resource "google_compute_instance" "mysql" {
     sudo touch /tmp/startup_done
   EOF
 
-  tags = ["ssh", "http", "mysql"]
+  tags = ["ssh", "http", "mysql", "icmp"]
 }
