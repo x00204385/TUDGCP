@@ -23,6 +23,11 @@ resource "google_compute_instance" "web_private_1" {
     sudo curl -O https://wordpress.org/latest.tar.gz
     sudo tar xf latest.tar.gz
     sudo mv wordpress/ /var/www/html/
+    sudo cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
+    cd /var/www/html/wordpress
+    sudo sed -i 's/database_name_here/wp/g' wp-config.php
+    sudo sed -i 's/username_here/wp_user/g' wp-config.php
+    sudo sed -i 's/password_here/Computing1/g' wp-config.php
     sudo chown -R www-data:www-data /var/www/html/
     sudo chmod -R 755 /var/www/html/
     sudo touch /tmp/startup_done
@@ -57,6 +62,11 @@ resource "google_compute_instance" "web_private_2" {
     sudo curl -O https://wordpress.org/latest.tar.gz
     sudo tar xf latest.tar.gz
     sudo mv wordpress/ /var/www/html/
+    sudo cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
+    cd /var/www/html/wordpress
+    sudo sed -i 's/database_name_here/wp/g' wp-config.php
+    sudo sed -i 's/username_here/wp_user/g' wp-config.php
+    sudo sed -i 's/password_here/Computing1/g' wp-config.php
     sudo chown -R www-data:www-data /var/www/html/
     sudo chmod -R 755 /var/www/html/
     sudo touch /tmp/startup_done
