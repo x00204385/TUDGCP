@@ -80,9 +80,24 @@ variable "public_subnet_cidr_1" {
   description = "Public subnet CIDR 1"
 }
 
+# define Public subnet
+variable "public_subnet_cidr_2" {
+  type        = string
+  description = "Public subnet CIDR 2"
+}
+
+
 
 # define Public subnet
 variable "private_subnet_cidr_1" {
+  type        = string
+  description = "Private subnet CIDR 1"
+}
+
+
+# My IP address. Address of my laptop
+
+variable "home_ip" {
   type        = string
   description = "Private subnet CIDR 1"
 }

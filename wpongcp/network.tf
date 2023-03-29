@@ -18,6 +18,22 @@ resource "google_compute_subnetwork" "private_subnet_1" {
   network       = google_compute_network.vpc.name
 }
 
+# create public subnet
+resource "google_compute_subnetwork" "public_subnet_1" {
+  name          = "wordpress-public-subnet-1"
+  ip_cidr_range = var.public_subnet_cidr_1
+  network       = google_compute_network.vpc.name
+  region        = var.gcp_region_1
+}
+
+# create public subnet
+resource "google_compute_subnetwork" "public_subnet_2" {
+  name          = "wordpress-public-subnet-2"
+  ip_cidr_range = var.public_subnet_cidr_2
+  network       = google_compute_network.vpc.name
+  region        = var.gcp_region_1
+}
+
 # create a public ip for nat service
 resource "google_compute_address" "nat-ip" {
   name    = "wordpress-nap-ip"

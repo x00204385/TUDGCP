@@ -71,5 +71,20 @@ resource "google_compute_firewall" "allow-icmp" {
   source_ranges = ["0.0.0.0/0"]
 }
 
+# allow VM to connect to Cloud SQL instance
+resource "google_compute_firewall" "allow_sql" {
+  name    = "allow-sql"
+  network = google_compute_network.vpc.self_link
+
+  allow {
+    protocol = "tcp"
+    ports    = ["3306"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+
+}
+
+
 
 

@@ -32,7 +32,7 @@ resource "google_compute_backend_service" "backend_service" {
 # creates a group of dissimilar virtual machine instances
 resource "google_compute_instance_group" "web_private_group" {
   name        = "wordpress-vm-group"
-  description = "Web servers instance group"
+  description = "Wordpress app servers instance group"
   project     = var.project_id
   zone        = var.gcp_zone_1
   instances = [
