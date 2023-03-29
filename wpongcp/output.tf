@@ -22,12 +22,12 @@ output "instance_public_instances" {
 }
 
 
-output "wpdb_instance_name" {
-  description = "The name of the wp Cloud SQL database instance"
-  value       = google_sql_database_instance.wordpress.name
-}
+# output "wpdb_instance_name" {
+#   description = "The name of the wp Cloud SQL database instance"
+#   value       = google_sql_database_instance.wordpress.name
+# }
 
-output "wpdb_public_ip_address" {
-  description = "The public IPv4 address of the wp CloudSQL instance."
-  value       = google_sql_database_instance.wordpress.public_ip_address
-}
+# output "wpdb_public_ip_address" {
+#   description = "The public IPv4 address of the wp CloudSQL instance."
+#   value       = google_sql_database_instance.wordpress.public_ip_address
+# }

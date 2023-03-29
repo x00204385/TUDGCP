@@ -23,22 +23,22 @@ resource "google_compute_backend_service" "backend_service" {
   protocol      = "HTTP"
   health_checks = ["${google_compute_health_check.healthcheck.self_link}"]
   backend {
-    group                 = google_compute_instance_group.web_private_group.self_link
+    group                 = google_compute_instance_group.web_public_group.self_link
     balancing_mode        = "RATE"
     max_rate_per_instance = 100
   }
 }
 
 # creates a group of dissimilar virtual machine instances
-resource "google_compute_instance_group" "web_private_group" {
+resource "google_compute_instance_group" "web_public_group" {
   name        = "wordpress-vm-group"
   description = "Wordpress app servers instance group"
   project     = var.project_id
   zone        = var.gcp_zone_1
   instances = [
-    google_compute_instance.web_private_1.self_link,
-    google_compute_instance.web_private_2.self_link
-  ]
+    for app_instance in google_compute_instance.apps :
+  app_instance.self_link]
+
   named_port {
     name = "http"
     port = "80"
