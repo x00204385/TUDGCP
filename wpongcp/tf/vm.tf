@@ -1,4 +1,5 @@
 # Create Google Cloud VMs | vm.tf
+# 
 
 # Create web server #1
 resource "google_compute_instance" "web_private_1" {
@@ -57,10 +58,7 @@ resource "google_compute_instance" "web_private_2" {
     sudo apt update -y 
     sudo apt install -y apache2 
     sudo apt install -y php libapache2-mod-php php-mysql
-    sudo apt install -y nfs-common
     sudo apt install -y mysql-server
-    sudo mkdir /var/www/html/wordpress
-    echo "'sudo sudo mount -o rw,intr,hard,timeo=600,retrans=3,rsize=262144,wsize=1048576,resvport 172.26.61.250:/wordpress  /mnt/fs' >> mount.sh
     cd /tmp
     sudo curl -O https://wordpress.org/latest.tar.gz
     sudo tar xf latest.tar.gz
@@ -74,6 +72,9 @@ resource "google_compute_instance" "web_private_2" {
     sudo chmod -R 755 /var/www/html/
     sudo touch /tmp/startup_done
   EOF
+
+# metadata_startup_script = "${file("../provision-wordpress.sh")}"
+
 
   network_interface {
     network    = google_compute_network.vpc.name
@@ -105,30 +106,20 @@ resource "google_compute_instance" "apps" {
       // Ephemeral IP
     }
   }
+# Pass the startup script as metadata. Use Terraform interpolation to fill in some parameters
+metadata = {
+  provision_script = templatefile("${path.module}/../scripts/provision-wordpress.sh", {
+      mount_point = google_filestore_instance.wordpress.networks.0.ip_addresses.0
+    })}
 
 # Startup script to provision wordpress
 # To rerun: sudo google_metadata_script_runner startup
-# To see the output: sudo journalctl -u google-startup-scripts.service
-#
-  metadata_startup_script = <<-EOF
-    sudo apt update
-    sudo apt update && sudo apt install -y nfs-common
-    sudo mkdir /var/www/html/wordpress
-    echo 'sudo mount -o rw,intr,hard,timeo=600,retrans=3,rsize=262144,wsize=1048576,resvport ${google_filestore_instance.wordpress.networks.0.ip_addresses.0}:/wordpress /var/www/html/wordpress' >> /tmp/mount.sh
-    sudo mount -o rw,intr,hard,timeo=600,retrans=3,rsize=262144,wsize=1048576,resvport ${google_filestore_instance.wordpress.networks.0.ip_addresses.0}:/wordpress /var/www/html/wordpress
-    sudo apt install -y mysql-client
-    sudo apt install -y php libapache2-mod-php php-mysql
-    sudo apt install -y apache2 
-    cd /tmp
-    sudo curl -O https://wordpress.org/latest.tar.gz
-    sudo tar xf latest.tar.gz -C /var/www/html
-    sudo cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
-    cd /var/www/html/wordpress
-    sudo sed -i 's/database_name_here/wp/g' wp-config.php
-    sudo sed -i 's/username_here/wp_user/g' wp-config.php
-    sudo sed -i 's/password_here/Computing1/g' wp-config.php
-    sudo chown -R www-data:www-data /var/www/html/
-    sudo chmod -R 755 /var/www/html/
-    sudo touch /tmp/startup_done
-  EOF
+# To see the output: sudo journalctl -u google-startup-scripts.servic
+metadata_startup_script = <<-EOF
+  # Retrieve provision-wordpress.sh from metadata server and execute it
+  curl -s -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/provision_script" > /tmp/provision-wordpress.sh
+  chmod +x /tmp/provision-wordpress.sh
+  /tmp/provision-wordpress.sh
+EOF
+
 }
