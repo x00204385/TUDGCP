@@ -57,7 +57,10 @@ resource "google_compute_instance" "web_private_2" {
     sudo apt update -y 
     sudo apt install -y apache2 
     sudo apt install -y php libapache2-mod-php php-mysql
+    sudo apt install -y nfs-common
     sudo apt install -y mysql-server
+    sudo mkdir /var/www/html/wordpress
+    echo "'sudo sudo mount -o rw,intr,hard,timeo=600,retrans=3,rsize=262144,wsize=1048576,resvport 172.26.61.250:/wordpress  /mnt/fs' >> mount.sh
     cd /tmp
     sudo curl -O https://wordpress.org/latest.tar.gz
     sudo tar xf latest.tar.gz
@@ -92,6 +95,8 @@ resource "google_compute_instance" "apps" {
     }
   }
 
+  depends_on = [google_filestore_instance.wordpress]
+
   network_interface {
     network    = google_compute_network.vpc.name
     subnetwork = google_compute_subnetwork.public_subnet_1.name
@@ -101,15 +106,22 @@ resource "google_compute_instance" "apps" {
     }
   }
 
+# Startup script to provision wordpress
+# To rerun: sudo journalctl -u google-startup-scripts.serviceta_script_runner startup
+# To see the output: sudo journalctl -u google-startup-scripts.service
+#
   metadata_startup_script = <<-EOF
     sudo apt update -y 
-    sudo apt install -y apache2 
-    sudo apt install -y php libapache2-mod-php php-mysql
+    sudo apt install -y nfs-common
+    sudo mkdir /var/www/html/wordpress
+    echo 'sudo mount -o rw,intr,hard,timeo=600,retrans=3,rsize=262144,wsize=1048576,resvport ${google_filestore_instance.wordpress.networks.0.ip_addresses.0}:/wordpress /var/www/html/wordpress' >> /tmp/mount.sh
+    sudo mount -o rw,intr,hard,timeo=600,retrans=3,rsize=262144,wsize=1048576,resvport ${google_filestore_instance.wordpress.networks.0.ip_addresses.0}:/wordpress /var/www/html/wordpress
     sudo apt install -y mysql-client
+    sudo apt install -y php libapache2-mod-php php-mysql
+    sudo apt install -y apache2 
     cd /tmp
     sudo curl -O https://wordpress.org/latest.tar.gz
-    sudo tar xf latest.tar.gz
-    sudo mv wordpress/ /var/www/html/
+    sudo tar xf latest.tar.gz -C /var/www/html
     sudo cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
     cd /var/www/html/wordpress
     sudo sed -i 's/database_name_here/wp/g' wp-config.php

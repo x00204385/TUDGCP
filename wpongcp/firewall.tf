@@ -60,7 +60,7 @@ resource "google_compute_firewall" "allow-rdp" {
   source_ranges = ["0.0.0.0/0"]
 }
 
-# allow rdp traffic
+# allow icmp traffic
 resource "google_compute_firewall" "allow-icmp" {
   name    = "wordpress-fw-allow-icmp"
   network = google_compute_network.vpc.name
@@ -84,6 +84,25 @@ resource "google_compute_firewall" "allow_sql" {
   source_ranges = ["0.0.0.0/0"]
 
 }
+
+
+# allow VM to connect to Cloud SQL instance
+resource "google_compute_firewall" "allow_filestore" {
+  name    = "allow-all"
+  network = google_compute_network.vpc.self_link
+
+
+  allow {
+    protocol = "tcp"
+    ports    = ["111", "2049"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+
+}
+
+
+
 
 
 
