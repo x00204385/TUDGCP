@@ -27,3 +27,7 @@ sudo mysql -h 10.10.x.x -u wp_user -p
 # Then check the load balancer URL to confirm apache running
 # Verify lburl/wordpress works. Will need to go through initial login.
 ```
+
+# Adding Cloud SQL instance
+See terraform output for ip address of Cloud SQL instance.
+Connect to webserver-pub-[12] and edit wp-config.php. Populate with address of CloudSQL instance. Wordpress is working!
