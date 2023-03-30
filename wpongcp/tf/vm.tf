@@ -107,12 +107,12 @@ resource "google_compute_instance" "apps" {
   }
 
 # Startup script to provision wordpress
-# To rerun: sudo journalctl -u google-startup-scripts.serviceta_script_runner startup
+# To rerun: sudo google_metadata_script_runner startup
 # To see the output: sudo journalctl -u google-startup-scripts.service
 #
   metadata_startup_script = <<-EOF
-    sudo apt update -y 
-    sudo apt install -y nfs-common
+    sudo apt update
+    sudo apt update && sudo apt install -y nfs-common
     sudo mkdir /var/www/html/wordpress
     echo 'sudo mount -o rw,intr,hard,timeo=600,retrans=3,rsize=262144,wsize=1048576,resvport ${google_filestore_instance.wordpress.networks.0.ip_addresses.0}:/wordpress /var/www/html/wordpress' >> /tmp/mount.sh
     sudo mount -o rw,intr,hard,timeo=600,retrans=3,rsize=262144,wsize=1048576,resvport ${google_filestore_instance.wordpress.networks.0.ip_addresses.0}:/wordpress /var/www/html/wordpress
