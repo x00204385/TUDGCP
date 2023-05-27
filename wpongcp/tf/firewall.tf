@@ -1,7 +1,7 @@
 
 # allow http traffic
 resource "google_compute_firewall" "allow-http" {
-  name    = "wordpress-fw-allow-http"
+  name    = "wordpress-fw-allow-http-${var.suffix}"
   network = google_compute_network.vpc.name
   allow {
     protocol = "tcp"
@@ -13,7 +13,7 @@ resource "google_compute_firewall" "allow-http" {
 
 # allow https traffic
 resource "google_compute_firewall" "allow-https" {
-  name    = "wordpress-fw-allow-https"
+  name    = "wordpress-fw-allow-https-${var.suffix}"
   network = google_compute_network.vpc.name
   allow {
     protocol = "tcp"
@@ -25,7 +25,7 @@ resource "google_compute_firewall" "allow-https" {
 
 # allow ssh traffic
 resource "google_compute_firewall" "allow-ssh" {
-  name    = "wordpress-fw-allow-ssh"
+  name    = "wordpress-fw-allow-ssh-${var.suffix}"
   network = google_compute_network.vpc.name
   allow {
     protocol = "tcp"
@@ -37,7 +37,7 @@ resource "google_compute_firewall" "allow-ssh" {
 
 # allow mysql traffic
 resource "google_compute_firewall" "allow-mysql" {
-  name    = "wordpress-fw-allow-mysql"
+  name    = "wordpress-fw-allow-mysql-${var.suffix}"
   network = google_compute_network.vpc.name
   allow {
     protocol = "tcp"
@@ -50,7 +50,7 @@ resource "google_compute_firewall" "allow-mysql" {
 
 # allow rdp traffic
 resource "google_compute_firewall" "allow-rdp" {
-  name    = "wordpress-fw-allow-rdp"
+  name    = "wordpress-fw-allow-rdp-${var.suffix}"
   network = google_compute_network.vpc.name
   allow {
     protocol = "tcp"
@@ -62,7 +62,7 @@ resource "google_compute_firewall" "allow-rdp" {
 
 # allow icmp traffic
 resource "google_compute_firewall" "allow-icmp" {
-  name    = "wordpress-fw-allow-icmp"
+  name    = "wordpress-fw-allow-icmp-${var.suffix}"
   network = google_compute_network.vpc.name
   allow {
     protocol = "icmp"
@@ -73,7 +73,7 @@ resource "google_compute_firewall" "allow-icmp" {
 
 # allow VM to connect to Cloud SQL instance
 resource "google_compute_firewall" "allow_sql" {
-  name    = "allow-sql"
+  name    = "allow-sql-${var.suffix}"
   network = google_compute_network.vpc.self_link
 
   allow {
@@ -88,9 +88,8 @@ resource "google_compute_firewall" "allow_sql" {
 
 # allow VM to connect to Cloud SQL instance
 resource "google_compute_firewall" "allow_filestore" {
-  name    = "allow-all"
+  name    = "allow-all-${var.suffix}"
   network = google_compute_network.vpc.self_link
-
 
   allow {
     protocol = "tcp"

@@ -1,7 +1,7 @@
 
 # create VPC
 resource "google_compute_network" "vpc" {
-  name                    = "wordpress-vpc"
+  name                    = "wordpress-vpc-${var.suffix}"
   auto_create_subnetworks = "false"
   routing_mode            = "GLOBAL"
 }
@@ -36,7 +36,7 @@ resource "google_compute_subnetwork" "public_subnet_2" {
 
 # create a public ip for nat service
 resource "google_compute_address" "nat-ip" {
-  name    = "wordpress-nap-ip"
+  name    = "wordpress-nat-ip"
   project = var.project_id
   region  = var.gcp_region_1
 }

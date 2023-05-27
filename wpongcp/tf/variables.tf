@@ -5,6 +5,11 @@ variable "app_name" {
   default     = "wordpress"
 }
 
+variable "suffix" {
+  description = "Suffix used to distinguish primary and secondary resources"
+  type        = string
+  default     = "eu"
+}
 
 
 variable "project_id" {
@@ -86,11 +91,13 @@ variable "public_subnet_cidr_2" {
   description = "Public subnet CIDR 2"
 }
 
-
-
 # define Public subnet
 variable "private_subnet_cidr_1" {
   type        = string
   description = "Private subnet CIDR 1"
 }
 
+variable "vpc_id" {
+  type    = string
+  default = null # optional with no default value
+}

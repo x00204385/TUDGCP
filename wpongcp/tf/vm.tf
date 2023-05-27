@@ -3,7 +3,7 @@
 
 # Create web server #1
 resource "google_compute_instance" "web_private_1" {
-  name         = "webserver-vm1"
+  name         = "webserver-vm1-${var.suffix}"
   machine_type = "e2-medium"
   zone         = var.gcp_zone_1
   tags         = ["ssh", "http", "icmp"]
@@ -13,7 +13,6 @@ resource "google_compute_instance" "web_private_1" {
       image = "ubuntu-os-cloud/ubuntu-2004-lts"
     }
   }
-
 
   metadata_startup_script = <<-EOF
     sudo apt update -y 
@@ -42,7 +41,7 @@ resource "google_compute_instance" "web_private_1" {
 
 # Create web server #2
 resource "google_compute_instance" "web_private_2" {
-  name         = "webserver-vm2"
+  name         = "webserver-vm2-${var.suffix}"
   machine_type = "e2-medium"
   zone         = var.gcp_zone_1
   tags         = ["ssh", "http", "icmp"]
@@ -85,7 +84,7 @@ resource "google_compute_instance" "web_private_2" {
 
 resource "google_compute_instance" "apps" {
   count        = 2
-  name         = "webserver-pub-${count.index + 1}"
+  name         = "webserver-pub-${var.suffix}-${count.index + 1}"
   machine_type = "e2-medium"
   zone         = var.gcp_zone_1
   tags         = ["ssh", "http", "icmp"]
