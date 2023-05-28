@@ -37,6 +37,7 @@ output "load-balancer-ip-address" {
   value = google_compute_global_forwarding_rule.global_forwarding_rule.ip_address
 }
 
+# Mount point for filestore
 output "nfs_mount_point" {
   value = google_filestore_instance.wordpress.networks.0.ip_addresses.0
 }

@@ -1,4 +1,4 @@
-primary	= true
+primary = true
 # GCP Settings
 gcp_region_1  = "europe-west1"
 gcp_zone_1    = "europe-west1-b"

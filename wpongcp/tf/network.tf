@@ -24,15 +24,15 @@ resource "google_compute_subnetwork" "private_subnet_1" {
   network       = data.google_compute_network.vpc.name
 }
 
-# # create private subnet
-# resource "google_compute_subnetwork" "private_subnet_2" {
-#   provider      = google-beta
-#   region        = var.gcp_region_1
-#   purpose       = "PRIVATE"
-#   name          = "wordpress-private-subnet-${var.suffix}-2"
-#   ip_cidr_range = var.private_subnet_cidr_2
-#   network       = data.google_compute_network.vpc.name
-# }
+# create private subnet
+resource "google_compute_subnetwork" "private_subnet_2" {
+  provider      = google-beta
+  region        = var.gcp_region_1
+  purpose       = "PRIVATE"
+  name          = "wordpress-private-subnet-${var.suffix}-2"
+  ip_cidr_range = var.private_subnet_cidr_2
+  network       = data.google_compute_network.vpc.name
+}
 
 # create public subnet
 resource "google_compute_subnetwork" "public_subnet_1" {
