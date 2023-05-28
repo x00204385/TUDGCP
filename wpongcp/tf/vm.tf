@@ -1,5 +1,8 @@
 # Create Google Cloud VMs | vm.tf
 # 
+locals {
+  public_subnets   = [google_compute_subnetwork.public_subnet_1.name, google_compute_subnetwork.public_subnet_2.name]
+}
 
 # Create web server #1
 resource "google_compute_instance" "web_private_1" {
@@ -34,7 +37,7 @@ resource "google_compute_instance" "web_private_1" {
   EOF
 
   network_interface {
-    network    = google_compute_network.vpc.name
+    network    = data.google_compute_network.vpc.name
     subnetwork = google_compute_subnetwork.private_subnet_1.name
   }
 }
@@ -72,11 +75,11 @@ resource "google_compute_instance" "web_private_2" {
     sudo touch /tmp/startup_done
   EOF
 
-# metadata_startup_script = "${file("../provision-wordpress.sh")}"
+  # metadata_startup_script = "${file("../provision-wordpress.sh")}"
 
 
   network_interface {
-    network    = google_compute_network.vpc.name
+    network    = data.google_compute_network.vpc.name
     subnetwork = google_compute_subnetwork.private_subnet_1.name
   }
 }
@@ -98,23 +101,24 @@ resource "google_compute_instance" "apps" {
   depends_on = [google_filestore_instance.wordpress]
 
   network_interface {
-    network    = google_compute_network.vpc.name
-    subnetwork = google_compute_subnetwork.public_subnet_1.name
+    network    = data.google_compute_network.vpc.name
+    # subnetwork = google_compute_subnetwork.public_subnet_1.name
+    subnetwork = local.public_subnets[0]    # Unmanaged instance groups must be in the same zone.
 
     access_config {
       // Ephemeral IP
     }
   }
-# Pass the startup script as metadata. Use Terraform interpolation to fill in some parameters
-metadata = {
-  provision_script = templatefile("${path.module}/../scripts/provision-wordpress.sh", {
+  # Pass the startup script as metadata. Use Terraform interpolation to fill in some parameters
+  metadata = {
+    provision_script = templatefile("${path.module}/../scripts/provision-wordpress.sh", {
       mount_point = google_filestore_instance.wordpress.networks.0.ip_addresses.0
-    })}
+  }) }
 
-# Startup script to provision wordpress
-# To rerun: sudo google_metadata_script_runner startup
-# To see the output: sudo journalctl -u google-startup-scripts.servic
-metadata_startup_script = <<-EOF
+  # Startup script to provision wordpress
+  # To rerun: sudo google_metadata_script_runner startup
+  # To see the output: sudo journalctl -u google-startup-scripts.servic
+  metadata_startup_script = <<-EOF
   # Retrieve provision-wordpress.sh from metadata server and execute it
   curl -s -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/provision_script" > /tmp/provision-wordpress.sh
   chmod +x /tmp/provision-wordpress.sh

@@ -1,4 +1,9 @@
 
+variable "primary" {
+  type        = bool
+  description = "Determine whether this is the primary or standby region"
+}
+
 variable "app_name" {
   description = "App name used to name various resources"
   type        = string
@@ -41,12 +46,6 @@ variable "region" {
   default     = "us-central1"
 }
 
-
-variable "client_email" {
-  description = "Service account email address"
-  type        = string
-  default     = ""
-}
 
 variable "username" {
   description = "The username for SSH access to the compute instance"
@@ -96,6 +95,13 @@ variable "private_subnet_cidr_1" {
   type        = string
   description = "Private subnet CIDR 1"
 }
+
+# define Public subnet
+variable "private_subnet_cidr_2" {
+  type        = string
+  description = "Private subnet CIDR 2"
+}
+
 
 variable "vpc_id" {
   type    = string

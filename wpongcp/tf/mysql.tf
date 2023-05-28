@@ -2,7 +2,7 @@
 #     sudo sed -i "s|bind-address.*|#bind-address|" /etc/mysql/mysql.conf.d/mysqld.cnf
 
 resource "google_compute_instance" "mysql" {
-  name         = "mysql-instance"
+  name         = "mysql-instance-${var.suffix}"
   machine_type = "e2-micro"
   zone         = var.gcp_zone_1
 
@@ -14,7 +14,7 @@ resource "google_compute_instance" "mysql" {
 
 
   network_interface {
-    network    = google_compute_network.vpc.name
+    network    = data.google_compute_network.vpc.name
     subnetwork = google_compute_subnetwork.private_subnet_1.name
   }
 

@@ -49,7 +49,7 @@ resource "google_compute_instance_group" "web_public_group" {
 
 # determine whether instances are responsive and able to do work
 resource "google_compute_health_check" "healthcheck" {
-  name               = "wordpress-healthcheck--${var.suffix}"
+  name = "wordpress-healthcheck--${var.suffix}"
 
   timeout_sec        = 1
   check_interval_sec = 1

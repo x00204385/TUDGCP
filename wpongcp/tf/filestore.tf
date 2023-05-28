@@ -1,14 +1,14 @@
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/filestore_instance
 #
 resource "google_filestore_instance" "wordpress" {
-  name    = "wordpress"
+  name    = "wordpress-${var.suffix}"
   project = var.project_id
 
   location = var.gcp_zone_1
   tier     = "BASIC_HDD"
 
   networks {
-    network = google_compute_network.vpc.name
+    network = data.google_compute_network.vpc.name
     modes   = ["MODE_IPV4"]
   }
 
@@ -17,8 +17,3 @@ resource "google_filestore_instance" "wordpress" {
     name        = "wordpress"
   }
 }
-
-output "nfs_mount_point" {
-  value = google_filestore_instance.wordpress.networks.0.ip_addresses.0
-}
-

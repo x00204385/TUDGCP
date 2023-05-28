@@ -21,4 +21,34 @@ sudo sed -i 's/username_here/wp_user/g' wp-config.php
 sudo sed -i 's/password_here/Computing1/g' wp-config.php
 sudo chown -R www-data:www-data /var/www/html/
 sudo chmod -R 755 /var/www/html/
+#
+# Add PHP files to /var/www/html to allow us to see the load balancing and failover behaviour
+#
+sudo a2enmod rewrite
+sudo apt install -y php libapache2-mod-php
+sudo mv /var/www/html/index.html /var/www/html/index.html.bak
+sudo cat <<'EOF' >/var/www/html/index.php
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to IAC4Fun on GCP!</title>
+</head>
+<body>
+    <h1>Welcome to IAC4Fun on GCP!</h1>
+    <?php
+    $instance_id = file_get_contents('http://metadata.google.internal/computeMetadata/v1/instance/id', false, stream_context_create(['http' => ['header' => 'Metadata-Flavor: Google']]));
+    $instance_ip = file_get_contents('http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/ip', false, stream_context_create(['http' => ['header' => 'Metadata-Flavor: Google']]));
+    $public_ip = file_get_contents('http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip', false, stream_context_create(['http' => ['header' => 'Metadata-Flavor: Google']]));
+    $availability_zone = file_get_contents('http://metadata.google.internal/computeMetadata/v1/instance/zone', false, stream_context_create(['http' => ['header' => 'Metadata-Flavor: Google']]));
+    $region = substr($availability_zone, strrpos($availability_zone, '/') + 1);
+    echo "<p>Instance ID: $instance_id</p>";
+    echo "<p>Instance IP: $instance_ip</p>";
+    echo "<p>Public IP: $public_ip</p>";
+    echo "<p>Region: $region</p>";
+    echo "<p>Availability Zone: $availability_zone</p>";
+    ?>
+</body>
+</html>
+EOF
+sudo systemctl restart apache2
 sudo touch /tmp/startup_done
