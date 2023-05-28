@@ -1,25 +1,25 @@
 # Virtual machine output | vm-output.tf
-output "web-1-name" {
-  value = google_compute_instance.web_private_1.name
-}
-output "web-1-internal-ip" {
-  value = google_compute_instance.web_private_1.network_interface.0.network_ip
-}
-output "web-2-name" {
-  value = google_compute_instance.web_private_2.name
-}
-output "web-2-internal-ip" {
-  value = google_compute_instance.web_private_2.network_interface.0.network_ip
-}
+# output "web-1-name" {
+#   value = google_compute_instance.web_private_1.name
+# }
+# output "web-1-internal-ip" {
+#   value = google_compute_instance.web_private_1.network_interface.0.network_ip
+# }
+# output "web-2-name" {
+#   value = google_compute_instance.web_private_2.name
+# }
+# output "web-2-internal-ip" {
+#   value = google_compute_instance.web_private_2.network_interface.0.network_ip
+# }
 
 output "mysql-internal-ip" {
   value = google_compute_instance.mysql.network_interface.0.network_ip
 }
 
 
-output "instance_public_instances" {
-  value = { for instance in google_compute_instance.apps : instance.name => instance.network_interface[0].access_config[0].nat_ip }
-}
+# output "instance_public_instances" {
+#   value = { for instance in google_compute_instance.apps : instance.name => instance.network_interface[0].access_config[0].nat_ip }
+# }
 
 
 # output "wpdb_instance_name" {
