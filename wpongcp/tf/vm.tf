@@ -2,6 +2,8 @@
 # 
 locals {
   public_subnets = [google_compute_subnetwork.public_subnet_1.name, google_compute_subnetwork.public_subnet_2.name]
+  private_subnets = [google_compute_subnetwork.private_subnet_1.name, google_compute_subnetwork.private_subnet_2.name]
+
 }
 
 # Create template for VM instances
@@ -27,7 +29,7 @@ resource "google_compute_instance_template" "web_server" {
 
   network_interface {
     network    = data.google_compute_network.vpc.name
-    subnetwork = local.public_subnets[0]
+    subnetwork = local.private_subnets[0]
 
     access_config {
       // Ephemeral IP
