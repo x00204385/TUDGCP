@@ -1,6 +1,11 @@
 #    sed -i "s/127.0.0.1/0.0.0.0/g" /etc/mysql/mysql.conf.d/mysqld.cnf
 #     sudo sed -i "s|bind-address.*|#bind-address|" /etc/mysql/mysql.conf.d/mysqld.cnf
 
+#
+# This file creates a compute engine instance and deploys MySQL on it. This is just for convenience as creating a CloudSQL instance
+# in GCP with Terraform can take 20 minutes. This creates in a few minutes and can allow us to run Wordpress
+#
+
 resource "google_compute_instance" "mysql" {
   name         = "mysql-instance-${var.suffix}"
   machine_type = "e2-micro"

@@ -1,5 +1,36 @@
-# Load balancer with unmanaged instance group 
+# Load balancer with managed instance group 
 # used to forward traffic to the correct load balancer for HTTP load balancing
+# 
+# 
+#
+#         +-------------------+
+#         |  Forwarding Rule  |
+#         +-------------------+
+#                     |
+#                     V
+#         +-------------------+
+#         | Target HTTP Proxy |
+#         +-------------------+
+#                     |
+#                     V
+#         +-------------------+
+#         |      URL Map      |
+#         +-------------------+
+#                     |
+#                     V
+#         +-------------------+
+#         |  Backend Service  |
+#         +-------------------+
+#                     |
+#                     V
+# +----------------------------+
+# | Compute Instance Group Mgr |
+# +----------------------------+
+#                     |
+#                     V
+# +-------------------------+
+# |  Managed Instance Group |
+# +-------------------------+
 
 resource "google_compute_global_forwarding_rule" "global_forwarding_rule" {
   name       = "wordpress-global-forwarding-rule-${var.suffix}"
@@ -88,22 +119,6 @@ resource "google_compute_autoscaler" "autoscaler" {
     }
   }
 }
-
-# # creates a group of dissimilar virtual machine instances
-# resource "google_compute_instance_group" "web_public_group" {
-#   name        = "wordpress-vm-group-${var.suffix}"
-#   description = "Wordpress app servers instance group"
-#   project     = var.project_id
-#   zone        = var.gcp_zone_1
-#   instances = [
-#     for app_instance in google_compute_instance.apps :
-#   app_instance.self_link]
-
-#   named_port {
-#     name = "http"
-#     port = "80"
-#   }
-# }
 
 
 

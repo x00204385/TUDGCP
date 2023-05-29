@@ -1,5 +1,6 @@
 #
-# Define provid
+# Define providers. Google has two provider APis. The default and a beta provider for API that are still in beta
+#
 
 provider "google" {
   project = var.project_id

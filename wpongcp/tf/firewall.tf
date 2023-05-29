@@ -1,3 +1,8 @@
+#
+# Create the required firewall rules
+# Firewall rules are VPC wide so only need to be created once. Use a count variable so that the 
+# firewall rules are only created when the primary infrastructure is created
+#
 
 # allow http traffic
 resource "google_compute_firewall" "allow-http" {

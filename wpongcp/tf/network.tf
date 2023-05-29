@@ -1,5 +1,9 @@
+#
+# Create the VPC and the subnets within. 
+# As we are using the fact that GCP VPCs are global resources, we rely on the VPC having been created
+# and use a terraform "data" declaration to access the VPC.
 
-# # create VPC
+# # create VPC - no longer in use
 # resource "data.google_compute_network" "vpc" {
 #   name                    = "wordpress-vpc-${var.suffix}"
 #   auto_create_subnetworks = "false"
@@ -7,7 +11,8 @@
 # }
 
 
-# get VPC
+# get VPC using a data source. [TODO: Implement conditional creation of the VPC if it doesn't exist]
+#
 data "google_compute_network" "vpc" {
   name    = "wordpress-vpc"
   project = var.project_id
