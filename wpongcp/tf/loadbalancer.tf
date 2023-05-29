@@ -62,6 +62,7 @@ resource "google_compute_backend_service" "backend_service" {
 }
 
 
+
 # creates a group of virtual machine instances
 resource "google_compute_instance_group_manager" "web_private_group" { # Change the name of the group manager (or make it private)
   name        = "wordpress-vm-group-${var.suffix}"
@@ -71,7 +72,7 @@ resource "google_compute_instance_group_manager" "web_private_group" { # Change 
 
   base_instance_name = "wordpress-web-${var.suffix}"
 
-  depends_on = [google_filestore_instance.wordpress]
+  depends_on = [google_filestore_instance.wordpress, google_sql_database_instance.wordpress]
 
   version {
     instance_template = google_compute_instance_template.web_server.self_link

@@ -7,8 +7,8 @@ locals {
 # Create template for VM instances
 resource "google_compute_instance_template" "web_server" {
   name                 = "web-server-template-${var.suffix}" # Note we probably don't need one of these per region
-  description          = "This template is used to create web server instances running Apache"
-  instance_description = "Web Server running Apache"
+  description          = "This template is used to create server instances. Instances running Apache + whatever is provisioned by script"
+  instance_description = "Web server running apache + provisioned applications"
   can_ip_forward       = false
   machine_type         = "e2-medium"
   tags                 = ["ssh", "http"]
@@ -38,6 +38,7 @@ resource "google_compute_instance_template" "web_server" {
   metadata = {
     provision_script = templatefile("${path.module}/../scripts/provision-wordpress.sh", {
       mount_point = google_filestore_instance.wordpress.networks.0.ip_addresses.0
+      db_ip_address = google_compute_instance.mysql.network_interface.0.network_ip
     })
   }
 
