@@ -12,7 +12,7 @@ resource "google_compute_instance_template" "web_server" {
   description          = "This template is used to create server instances. Instances running Apache + whatever is provisioned by script"
   instance_description = "Web server running apache + provisioned applications"
   can_ip_forward       = false
-  machine_type         = "e2-medium"
+  machine_type         = "e2-micro"
   tags                 = ["ssh", "http"]
 
   scheduling {
@@ -67,7 +67,7 @@ EOF
 # # Create web server #1
 # resource "google_compute_instance" "web_private_1" {
 #   name         = "webserver-vm1-${var.suffix}"
-#   machine_type = "e2-medium"
+#   machine_type = "e2-micro"
 #   zone         = var.gcp_zone_1
 #   tags         = ["ssh", "http", "icmp"]
 
