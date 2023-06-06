@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "Running startup script"
 sudo apt update -y
-sudo apt update && sudo apt install -y nfs-common
+sudo apt update && sudo apt install -y nfs-common stress
 sudo apt update && sudo apt install -y php libapache2-mod-php php-mysql
 echo "Creating wordpress directory"
 sudo mkdir -p /var/www/html/wordpress

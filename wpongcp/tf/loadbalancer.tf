@@ -64,6 +64,8 @@ resource "google_compute_backend_service" "backend_service" {
 
 
 # creates a group of virtual machine instances
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance_group_manager
+#
 resource "google_compute_instance_group_manager" "web_private_group" { # Change the name of the group manager (or make it private)
   name        = "wordpress-vm-group-${var.suffix}"
   description = "Wordpress app servers instance group"
@@ -82,6 +84,11 @@ resource "google_compute_instance_group_manager" "web_private_group" { # Change 
     name = "http"
     port = 80
   }
+
+  auto_healing_policies {
+    health_check      = google_compute_health_check.autohealing.id
+    initial_delay_sec = 300
+  }
 }
 
 # determine whether instances are responsive and able to do work
@@ -92,6 +99,18 @@ resource "google_compute_health_check" "healthcheck" {
   check_interval_sec = 1
   http_health_check {
     port = 80
+  }
+}
+
+resource "google_compute_health_check" "autohealing" {
+  name                = "autohealing-health-check-${var.suffix}"
+  check_interval_sec  = 5
+  timeout_sec         = 5
+  healthy_threshold   = 2
+  unhealthy_threshold = 10 # 50 seconds
+
+  http_health_check {
+    port         = 80
   }
 }
 
@@ -116,7 +135,7 @@ resource "google_compute_autoscaler" "autoscaler" {
     cooldown_period = var.lb_cooldown_period
 
     cpu_utilization {
-      target = 0.8
+      target = 0.4
     }
   }
 }
