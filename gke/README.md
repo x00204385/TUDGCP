@@ -34,9 +34,6 @@ Will get something like:
 
 Create the service:
 
-```sh
-kubectl expose deployment hostnames --port=80 --target-port=9376
-```
 Run a busyboxy so we can debug within the cluster
 
 ```sh
@@ -47,8 +44,8 @@ kubectl run -it --rm --restart=Never busybox --image=gcr.io/google-containers/bu
 In the busybox pod
 
 ```
-for ep in 10.244.0.5:9376 10.244.0.6:9376 10.244.0.7:9376; do
-    wget -qO- $ep
+for ep in 10.244.0.5 10.244.0.6 10.244.0.7; do
+    wget -qO- $ep:8080
 done
 ```
 
