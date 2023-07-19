@@ -21,8 +21,7 @@ kubectl apply -f hello
 
 Get the list of pod IP addresses
 ```sh
-kubectl get pods -l app=hostnames \
-    -o go-template='{{range .items}}{{.status.podIP}}{{"\n"}}{{end}}'
+kubectl get pods -l app=hello-app -o go-template='{{range .items}}{{.status.podIP}}{{"\n"}}{{end}}'
 ```
 
 Will get something like:
