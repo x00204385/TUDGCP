@@ -31,4 +31,3 @@ override.tf.json
 .DS_Store
 timings.txt
 Tutorials/
-Tutorials/learn-terraform-provision-gke-cluster/
