@@ -47,6 +47,13 @@ variable "region" {
 }
 
 
+variable "gke_location" {
+  description = "The GCP zone to deploy GKE control plane and nodes"
+  type        = string
+  default     = "us-central1-a"
+}
+
+
 variable "username" {
   description = "The username for SSH access to the compute instance"
   default     = "x00204385"
@@ -130,4 +137,22 @@ variable "lb_cooldown_period" {
   type        = string
   description = "The number of seconds that the autoscaler should wait before it starts collecting information from a new instance"
   default     = 300
+}
+
+
+# GKE variables
+#
+variable "gke_username" {
+  default     = ""
+  description = "gke username"
+}
+
+variable "gke_password" {
+  default     = ""
+  description = "gke password"
+}
+
+variable "gke_num_nodes" {
+  default     = 1
+  description = "number of gke nodes"
 }

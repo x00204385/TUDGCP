@@ -22,3 +22,13 @@ output "nfs_mount_point" {
   description = "The IP address of the filestore mount point"
   value       = google_filestore_instance.wordpress.networks.0.ip_addresses.0
 }
+
+output "kubernetes_cluster_name" {
+  value       = google_container_cluster.primary.name
+  description = "GKE Cluster Name"
+}
+
+output "kubernetes_cluster_host" {
+  value       = google_container_cluster.primary.endpoint
+  description = "GKE Cluster Host"
+}
