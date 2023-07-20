@@ -6,7 +6,7 @@
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster
 #
 resource "google_container_cluster" "primary" {
-  name = "ica-gke-${var.suffix}"
+  name = "iac-gke-${var.suffix}"
   # location = var.region
   # location = var.gke_cluster_location
   location = var.gke_location
