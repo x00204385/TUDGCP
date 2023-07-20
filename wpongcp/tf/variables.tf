@@ -1,7 +1,18 @@
 
+variable "project_id" {
+  description = "The project ID to deploy resources into"
+  type        = string
+  default     = "tudproj-380715"
+}
+
 variable "primary" {
   type        = bool
   description = "Determine whether this is the primary or standby region"
+}
+
+variable "vpc_id" {
+  type    = string
+  default = null # optional with no default value
 }
 
 variable "app_name" {
@@ -16,12 +27,6 @@ variable "suffix" {
   default     = "eu"
 }
 
-
-variable "project_id" {
-  description = "The project ID to deploy resources into"
-  type        = string
-  default     = "tudproj-380715"
-}
 
 variable "subnetwork" {
   description = "The name of the subnetwork to deploy instances into"
@@ -107,36 +112,6 @@ variable "private_subnet_cidr_1" {
 variable "private_subnet_cidr_2" {
   type        = string
   description = "Private subnet CIDR 2"
-}
-
-
-variable "vpc_id" {
-  type    = string
-  default = null # optional with no default value
-}
-
-
-# Load balancer variables | lb-managed-variables.tf
-
-# maximum number of VMs for load balancer autoscale
-variable "lb_max_replicas" {
-  type        = string
-  description = "Maximum number of VMs for autoscale"
-  default     = 6
-}
-
-# minimum number of VMs for load balancer autoscale
-variable "lb_min_replicas" {
-  type        = string
-  description = "Minimum number of VMs for autoscale"
-  default     = 2
-}
-
-# number of seconds that the autoscaler should wait before it starts collecting information
-variable "lb_cooldown_period" {
-  type        = string
-  description = "The number of seconds that the autoscaler should wait before it starts collecting information from a new instance"
-  default     = 300
 }
 
 

@@ -12,9 +12,9 @@ output "wpdb_instance_name" {
 
 
 # show external ip address of load balancer
-output "load-balancer-ip-address" {
+output "load_balancer_ip_address" {
   description = "TThe public IP address of the load balancer"
-  value       = google_compute_global_forwarding_rule.global_forwarding_rule.ip_address
+  value       = module.asg.load_balancer_ip_address
 }
 
 # Mount point for filestore

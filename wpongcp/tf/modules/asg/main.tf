@@ -74,7 +74,7 @@ resource "google_compute_instance_group_manager" "web_private_group" { # Change 
 
   base_instance_name = "wordpress-web-${var.suffix}"
 
-  depends_on = [google_filestore_instance.wordpress, google_sql_database_instance.wordpress]
+  # depends_on = [google_filestore_instance.wordpress, google_sql_database_instance.wordpress]
 
   version {
     instance_template = google_compute_instance_template.web_server.self_link

@@ -35,7 +35,7 @@ resource "google_container_node_pool" "primary_nodes" {
   # location   = var.gke_cluster_location
   location = var.gke_location
   cluster  = google_container_cluster.primary.name
-  # node_count = 4
+  node_count = 2
 
 
   management {
