@@ -32,9 +32,9 @@ resource "google_compute_instance_template" "web_server" {
     network    = var.network
     subnetwork = var.asg_subnets[0]
 
-    access_config {
-      // Ephemeral IP
-    }
+    # access_config {
+    #   // Ephemeral IP
+    # }
   }
 
   # Pass the startup script as metadata. Use Terraform interpolation to fill in some parameters

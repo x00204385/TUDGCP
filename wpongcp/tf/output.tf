@@ -24,11 +24,11 @@ output "nfs_mount_point" {
 }
 
 output "kubernetes_cluster_name" {
-  value       = google_container_cluster.primary.name
+  value       = module.gke.kubernetes_cluster_name
   description = "GKE Cluster Name"
 }
 
 output "kubernetes_cluster_host" {
-  value       = google_container_cluster.primary.endpoint
+  value       = module.gke.kubernetes_cluster_host
   description = "GKE Cluster Host"
 }

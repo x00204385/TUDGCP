@@ -22,3 +22,15 @@ module "asg" {
   depends_on = [google_filestore_instance.wordpress, google_sql_database_instance.wordpress]
 
 }
+
+module "gke" {
+  source = "./modules/gke"
+
+  project_id = var.project_id
+  network = data.google_compute_network.vpc.name
+
+  gke_subnet = google_compute_subnetwork.private_subnet_1.name
+  gke_location = var.gke_location
+  suffix = var.suffix
+
+}

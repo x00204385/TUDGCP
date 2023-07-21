@@ -11,6 +11,16 @@ resource "google_container_cluster" "primary" {
   # location = var.gke_cluster_location
   location = var.gke_location
 
+  ip_allocation_policy {
+
+  }
+
+   private_cluster_config {
+    enable_private_nodes    = true
+    enable_private_endpoint = false
+    master_ipv4_cidr_block  = "172.16.0.0/28"
+  }
+
 
   # node_locations = ["us-central1-b"]
 
@@ -21,8 +31,10 @@ resource "google_container_cluster" "primary" {
   remove_default_node_pool = true
   initial_node_count       = 1
 
-  network    = data.google_compute_network.vpc.name
-  subnetwork = google_compute_subnetwork.public_subnet_1.name
+  # network    = data.google_compute_network.vpc.name
+  network    = var.network
+  # subnetwork = google_compute_subnetwork.public_subnet_1.name
+  subnetwork = var.gke_subnet
 
 }
 
@@ -48,8 +60,9 @@ resource "google_container_node_pool" "primary_nodes" {
     max_node_count = 10
   }
 
+
   node_config {
-    preemptible  = true
+    preemptible  = true   # Use spot instances
     machine_type = "e2-medium"
     # machine_type = "n1-standard-1"
 
@@ -63,10 +76,28 @@ resource "google_container_node_pool" "primary_nodes" {
     }
 
     disk_size_gb = 20
+
     tags         = ["gke-node", "${var.project_id}-gke"]
     metadata = {
       disable-legacy-endpoints = "true"
     }
+  }
+}
+
+resource "null_resource" "update_kubeconfig" {
+  triggers = {
+    always = timestamp()
+  }
+
+  depends_on = [google_container_cluster.primary]
+
+  provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
+    command     = <<EOT
+      set -e
+      echo 'Updating kubeconfig with cluster credentials...'
+      gcloud container clusters get-credentials ${google_container_cluster.primary.name} --zone ${var.gke_location}
+    EOT
   }
 }
 

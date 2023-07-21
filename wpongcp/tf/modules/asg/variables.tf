@@ -37,7 +37,7 @@ variable "mount_point" {
 }
 
 variable "db_ip_address" {
-  description = "Cloud SQL address"
+  description = "Address of Cloud SQL used for database services for web applications"
   type        = string
   default     = null
 }
