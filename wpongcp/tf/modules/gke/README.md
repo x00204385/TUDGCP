@@ -1,4 +1,4 @@
-## AGKE cluster module
+## GKE cluster module
 Terraform module to create a GKE instance that can be used to deploy workloads. Cluster is created as a private, zonal cluster with a spot instance based node group running in the same zone. 
 
 
