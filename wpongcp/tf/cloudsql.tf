@@ -5,6 +5,8 @@
 # https://cloud.google.com/sql/docs/mysql/authorize-networks
 
 # create Cloud SQL instance
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/sql_database.html
+#
 resource "google_sql_database_instance" "wordpress" {
   name             = "wordpress-instance-${var.suffix}"
   region           = var.gcp_region_1
@@ -57,3 +59,9 @@ resource "google_sql_database" "wp" {
   instance = google_sql_database_instance.wordpress.name
 }
 
+
+# # create second MySQL database to be used by the K8s instance
+resource "google_sql_database" "wp2" {
+  name     = "wp2"
+  instance = google_sql_database_instance.wordpress.name
+}

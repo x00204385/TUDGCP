@@ -4,12 +4,15 @@ output "mysql-internal-ip" {
   value       = google_compute_instance.mysql.network_interface.0.network_ip
 }
 
+output "cloudsql-private-ip" {
+  description = "The private IP address of the Cloud SQL MySQL database"
+  value       = google_sql_database_instance.wordpress.private_ip_address
+}
 
 output "wpdb_instance_name" {
   description = "The name of the wp Cloud SQL database instance"
   value       = google_sql_database_instance.wordpress.name
 }
-
 
 # show external ip address of load balancer
 output "load_balancer_ip_address" {

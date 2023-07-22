@@ -18,11 +18,14 @@ spec:
         name: wordpress
         env:
         - name: WORDPRESS_DB_HOST
-          value: mysql-service
+          valueFrom:
+            configMapKeyRef:
+              name: cloudsql
+              key: private_ip
         - name: WORDPRESS_DB_USER
           value: wp_user
         - name: WORDPRESS_DB_NAME
-          value: wp
+          value: wp2
         - name: WORDPRESS_DB_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -38,3 +41,4 @@ spec:
       - name: wordpress-persistent-storage
         persistentVolumeClaim:
           claimName: wordpress-pvc
+

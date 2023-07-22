@@ -11,6 +11,11 @@ resource "google_container_cluster" "primary" {
   # location = var.gke_cluster_location
   location = var.gke_location
 
+  release_channel {
+    channel = "REGULAR"
+  }
+
+
   ip_allocation_policy {
 
   }

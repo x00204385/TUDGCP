@@ -34,3 +34,20 @@ module "gke" {
   suffix = var.suffix
 
 }
+
+resource "null_resource" "update_configmap" {
+  triggers = {
+    always = timestamp()
+  }
+
+  depends_on = [module.gke]
+
+  provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
+    command     = <<EOT
+      set -e
+      echo 'Updating configmap with private IP of Cloud SQL instance ...'
+      kubectl create configmap cloudsql --from-literal=private_ip=${google_sql_database_instance.wordpress.private_ip_address} -n default
+    EOT
+  }
+}
