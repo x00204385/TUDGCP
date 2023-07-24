@@ -14,8 +14,6 @@ resource "google_service_account" "kubernetes" {
 #
 resource "google_container_cluster" "gkecluster" {
   name = "iac-gke-${var.suffix}"
-  # location = var.region
-  # location = var.gke_cluster_location
   location = var.gke_location
 
   release_channel {
@@ -37,13 +35,11 @@ resource "google_container_cluster" "gkecluster" {
   private_cluster_config {
     enable_private_nodes    = true
     enable_private_endpoint = false
-    # master_ipv4_cidr_block  = "172.16.0.0/28"
     master_ipv4_cidr_block = var.master_ipv4_cidr_block
 
   }
 
-  # We can't create a cluster with no node pool defined, but we want to only use
-  # separately managed node pools. So we create the smallest possible default
+  # Create a cluster with smallest possible default
   # node pool and immediately delete it.
 
   remove_default_node_pool = true
@@ -59,8 +55,6 @@ resource "google_container_cluster" "gkecluster" {
 #
 resource "google_container_node_pool" "gkecluster_nodes" {
   name = google_container_cluster.gkecluster.name
-  # location   = var.region
-  # location   = var.gke_cluster_location
   location          = var.gke_location
   cluster           = google_container_cluster.gkecluster.name
   node_count        = 2
@@ -82,13 +76,7 @@ resource "google_container_node_pool" "gkecluster_nodes" {
   node_config {
     preemptible  = true # Use spot instances
     machine_type = "e2-medium"
-    # machine_type = "n1-standard-1"
-
-    # oauth_scopes = [
-    #   "https://www.googleapis.com/auth/logging.write",
-    #   "https://www.googleapis.com/auth/monitoring",
-    # ]
-
+    
     service_account = google_service_account.kubernetes.email
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
