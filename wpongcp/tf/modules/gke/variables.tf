@@ -29,3 +29,20 @@ variable "suffix" {
   default     = null
 }
 
+variable "cluster_secondary_range_name" {
+  description = "CIDR used for pod IPs in GKE cluster"
+  type        = string
+  default     = null
+}
+
+variable "services_secondary_range_name" {
+  description = "CIDR used for service IPs in GKE cluster"
+  type        = string
+  default     = null
+}
+
+variable "master_ipv4_cidr_block" {
+  description = "CIDR to use for control plane in GKE cluster"
+  type        = string
+  default     = null
+}

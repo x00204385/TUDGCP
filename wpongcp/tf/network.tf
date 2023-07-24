@@ -27,7 +27,18 @@ resource "google_compute_subnetwork" "private_subnet_1" {
   name          = "wordpress-private-subnet-${var.suffix}-1"
   ip_cidr_range = var.private_subnet_cidr_1
   network       = data.google_compute_network.vpc.name
+
+  secondary_ip_range {
+    range_name    = "k8s-pod-range-${var.suffix}"
+    ip_cidr_range = var.gke_pod_ip_range
+  }
+
+  secondary_ip_range {
+    range_name    = "k8s-service-range-${var.suffix}"
+    ip_cidr_range = var.gke_services_ip_range
+  }
 }
+
 
 # create private subnet
 resource "google_compute_subnetwork" "private_subnet_2" {

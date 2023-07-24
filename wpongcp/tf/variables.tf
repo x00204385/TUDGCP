@@ -114,6 +114,24 @@ variable "private_subnet_cidr_2" {
   description = "Private subnet CIDR 2"
 }
 
+# GKE control plane IP range
+variable "master_ipv4_cidr_block" {
+  description = "CIDR to use for control plane in GKE cluster"
+  type        = string
+  default     = null
+}
+
+# GKE secondary IP ranges
+variable "gke_pod_ip_range" {
+  type        = string
+  description = "Secondary IP range for GKE pods"
+}
+
+variable "gke_services_ip_range" {
+  type        = string
+  description = "Secondary IP range for GKE services"
+}
+
 
 # GKE variables
 #
