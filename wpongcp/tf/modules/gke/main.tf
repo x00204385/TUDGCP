@@ -4,7 +4,7 @@
 
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account
 resource "google_service_account" "kubernetes" {
-  account_id = "kubernetes"
+  account_id   = "kubernetes"
   display_name = "GKE Service Account"
 }
 
@@ -21,17 +21,24 @@ resource "google_container_cluster" "gkecluster" {
   release_channel {
     channel = "REGULAR"
   }
+   
+  # Workload Identity allows workloads in  GKE clusters to impersonate Identity and Access Management (IAM) service 
+  # accounts to access Google Cloud services. 
+  
+  workload_identity_config {
+    workload_pool = "${var.project_id}.svc.id.goog"
+  }
 
   ip_allocation_policy {
     cluster_secondary_range_name  = var.cluster_secondary_range_name
     services_secondary_range_name = var.services_secondary_range_name
   }
 
-   private_cluster_config {
+  private_cluster_config {
     enable_private_nodes    = true
     enable_private_endpoint = false
     # master_ipv4_cidr_block  = "172.16.0.0/28"
-    master_ipv4_cidr_block  = var.master_ipv4_cidr_block
+    master_ipv4_cidr_block = var.master_ipv4_cidr_block
 
   }
 
@@ -54,10 +61,10 @@ resource "google_container_node_pool" "gkecluster_nodes" {
   name = google_container_cluster.gkecluster.name
   # location   = var.region
   # location   = var.gke_cluster_location
-  location = var.gke_location
-  cluster  = google_container_cluster.gkecluster.name
-  node_count = 2
-    max_pods_per_node = 64
+  location          = var.gke_location
+  cluster           = google_container_cluster.gkecluster.name
+  node_count        = 2
+  max_pods_per_node = 64
 
 
 
@@ -73,7 +80,7 @@ resource "google_container_node_pool" "gkecluster_nodes" {
 
 
   node_config {
-    preemptible  = true   # Use spot instances
+    preemptible  = true # Use spot instances
     machine_type = "e2-medium"
     # machine_type = "n1-standard-1"
 
@@ -93,7 +100,7 @@ resource "google_container_node_pool" "gkecluster_nodes" {
 
     disk_size_gb = 20
 
-    tags         = ["gke-node", "${var.project_id}-gke"]
+    tags = ["gke-node", "${var.project_id}-gke"]
     metadata = {
       disable-legacy-endpoints = "true"
     }

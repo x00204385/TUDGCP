@@ -6,8 +6,8 @@ variable "project_id" {
 
 variable "network" {
   description = "The network to which we deploy the resources"
-  type = string
-  default = null
+  type        = string
+  default     = null
 }
 
 

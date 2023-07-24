@@ -51,7 +51,7 @@ resource "null_resource" "update_configmap" {
     command     = <<EOT
       set -e
       echo 'Updating configmap with private IP of Cloud SQL instance ...'
-      kubectl create configmap cloudsql --from-literal=private_ip=${google_sql_database_instance.wordpress.private_ip_address} -n default
+      kubectl get configmap cloudsql -n default || kubectl create configmap cloudsql --from-literal=private_ip=${google_sql_database_instance.wordpress.private_ip_address} -n default
     EOT
   }
 }
