@@ -20,11 +20,11 @@ output "wpdb_instance_name" {
 #   value       = module.asg.load_balancer_ip_address
 # }
 
-# # Mount point for filestore
-# output "nfs_mount_point" {
-#   description = "The IP address of the filestore mount point"
-#   value       = google_filestore_instance.wordpress.networks.0.ip_addresses.0
-# }
+# Mount point for filestore
+output "nfs_mount_point" {
+  description = "The IP address of the filestore mount point"
+  value       = google_filestore_instance.wordpress.networks.0.ip_addresses.0
+}
 
 output "kubernetes_cluster_name" {
   value       = module.gke.kubernetes_cluster_name
