@@ -11,13 +11,12 @@ spec:
   - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   volumeMode: Filesystem
-  # nfs:
-  #   path: /wordpress
-  #   server: 10.71.14.98
-  csi:
-    driver: filestore.csi.storage.gke.io
-    # volumeHandle: "modeInstance/FILESTORE_INSTANCE_LOCATION/FILESTORE_INSTANCE_NAME/wordpress"
-    volumeHandle: "modeInstance/europe-west1-b/wordpress-eu/wordpress"
-    volumeAttributes:
-      ip: 10.71.14.98
-      volume: /wordpress
+  nfs:
+    path: /wordpress
+    server: 172.22.29.106
+  # csi:
+  #   driver: filestore.csi.storage.gke.io
+  #   volumeHandle: "modeInstance/europe-west1-b/wordpress-eu/wordpress"
+  #   volumeAttributes:
+  #     ip: 172.22.29.106
+  #     volume: /wordpress

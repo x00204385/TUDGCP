@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: filestore-pv
+spec:
+  storageClassName: ""
+  capacity:
+    storage: 1Ti
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  # nfs:
+  #   path: /wordpress
+  #   server: 10.224.10.114
+  csi:
+    driver: filestore.csi.storage.gke.io
+    volumeHandle: "modeInstance/europe-west1-b/wordpress-eu/wordpress"
+    volumeAttributes:
+      ip: 10.224.10.114
+      volume: /wordpress

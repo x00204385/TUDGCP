@@ -13,9 +13,9 @@ public_subnet_cidr_2  = "10.10.8.0/24"
 #
 # GKE secondary ranges
 #
-master_ipv4_cidr_block  = "172.16.1.0/28"
-gke_pod_ip_range      = "10.49.0.0/20"
-gke_services_ip_range = "10.53.0.0/20"
+master_ipv4_cidr_block = "172.16.1.0/28"
+gke_pod_ip_range       = "10.49.0.0/20"
+gke_services_ip_range  = "10.53.0.0/20"
 #
 #
 # Autoscaling

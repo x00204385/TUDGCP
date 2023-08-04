@@ -13,16 +13,16 @@ resource "google_service_account" "kubernetes" {
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster
 #
 resource "google_container_cluster" "gkecluster" {
-  name = "iac-gke-${var.suffix}"
+  name     = "iac-gke-${var.suffix}"
   location = var.gke_location
 
   release_channel {
     channel = "REGULAR"
   }
-   
+
   # Workload Identity allows workloads in  GKE clusters to impersonate Identity and Access Management (IAM) service 
   # accounts to access Google Cloud services. 
-  
+
   workload_identity_config {
     workload_pool = "${var.project_id}.svc.id.goog"
   }
@@ -35,8 +35,14 @@ resource "google_container_cluster" "gkecluster" {
   private_cluster_config {
     enable_private_nodes    = true
     enable_private_endpoint = false
-    master_ipv4_cidr_block = var.master_ipv4_cidr_block
+    master_ipv4_cidr_block  = var.master_ipv4_cidr_block
 
+  }
+
+  addons_config {
+    gcp_filestore_csi_driver_config {
+      enabled = true
+    }
   }
 
   # Create a cluster with smallest possible default
@@ -54,7 +60,7 @@ resource "google_container_cluster" "gkecluster" {
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_node_pool.html
 #
 resource "google_container_node_pool" "gkecluster_nodes" {
-  name = google_container_cluster.gkecluster.name
+  name              = google_container_cluster.gkecluster.name
   location          = var.gke_location
   cluster           = google_container_cluster.gkecluster.name
   node_count        = 2
@@ -76,7 +82,7 @@ resource "google_container_node_pool" "gkecluster_nodes" {
   node_config {
     preemptible  = true # Use spot instances
     machine_type = "e2-medium"
-    
+
     service_account = google_service_account.kubernetes.email
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"

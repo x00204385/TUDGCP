@@ -15,7 +15,7 @@ resource "google_filestore_instance" "wordpress" {
   }
 
   file_shares {
-    capacity_gb = 1024    # This is the minimum.
+    capacity_gb = 1024 # This is the minimum.
     name        = "wordpress"
   }
 }
