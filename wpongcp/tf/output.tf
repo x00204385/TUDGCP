@@ -14,11 +14,11 @@ output "wpdb_instance_name" {
   value       = google_sql_database_instance.wordpress.name
 }
 
-# # show external ip address of load balancer
-# output "load_balancer_ip_address" {
-#   description = "TThe public IP address of the load balancer"
-#   value       = module.asg.load_balancer_ip_address
-# }
+# show external ip address of load balancer
+output "load_balancer_ip_address" {
+  description = "TThe public IP address of the load balancer"
+  value       = module.asg.load_balancer_ip_address
+}
 
 # Mount point for filestore
 output "nfs_mount_point" {
