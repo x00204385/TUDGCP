@@ -4,7 +4,7 @@
 
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account
 resource "google_service_account" "kubernetes" {
-  account_id   = "kubernetes"
+  account_id   = "kubernetes-${var.suffix}"
   display_name = "GKE Service Account"
 }
 
